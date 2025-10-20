@@ -20,8 +20,6 @@ func (s Sale) String() string {
 }
 
 func selectSales(client int) ([]Sale, error) {
-	var sales []Sale
-
 	// Подключение к базе данных SQLite
 	db, err := sql.Open("sqlite", "demo.db") // предполагаем, что база данных называется sales.db
 	if err != nil {
@@ -29,16 +27,10 @@ func selectSales(client int) ([]Sale, error) {
 	}
 	defer db.Close()
 
-	// Проверка подключения
-	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("ошибка проверки подключения: %w", err)
-	}
-
-	// SQL-запрос для получения данных
-	query := "SELECT product, volume, date FROM sales WHERE client = ?"
+	var sales []Sale
 
 	// Выполнение запроса и получение результатов
-	rows, err := db.Query(query, client)
+	rows, err := db.Query("SELECT product, volume, date FROM sales WHERE client = :client", sql.Named("client", client))
 	if err != nil {
 		return nil, fmt.Errorf("ошибка выполнения запроса: %w", err)
 	}
