@@ -35,7 +35,7 @@ func selectSales(client int) ([]Sale, error) {
 	}
 
 	// SQL-запрос для получения данных
-	query := "SELECT product, volume, date FROM sales WHERE client_id = ?"
+	query := "SELECT product, volume, date FROM sales WHERE client = ?"
 
 	// Выполнение запроса и получение результатов
 	rows, err := db.Query(query, client)
